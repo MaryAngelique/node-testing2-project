@@ -1,15 +1,15 @@
 const Hobbit = require("./hobbits-model")
-const db = require("../../data/dbConfig")
+const database = require("../../data/dbConfig")
 
 beforeAll(async () => {
-  await db.migrate.rollback()
-  await db.migrate.latest()
+  await database.migrate.rollback()
+  await database.migrate.latest()
 })
 beforeEach(async () => {
-  await db.seed.run()
+  await database.seed.run()
 })
 afterAll(async () => {
-  await db.destroy() // disconnects from db
+  await database.destroy()
 })
 
 describe("hobbits model", () => {
@@ -31,7 +31,7 @@ describe("hobbits model", () => {
   describe("insert", () => {
     it("creates a new hobbit in db", async () => {
       await Hobbit.insert({ name: "bilbo" })
-      const [bilbo] = await db("hobbits").where("id", 5)
+      const [bilbo] = await database("hobbits").where("id", 5)
       expect(bilbo).toMatchObject({ id: 5, name: "bilbo" })    })
     it("resolves the new hobbit with id, name", async () => {
       const result = await Hobbit.insert({ name: "bilbo" })
